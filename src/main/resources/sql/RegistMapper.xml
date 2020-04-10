@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="regist">
+
+<select id="s_email" resultType="string">select s_email from student </select>
+
+<insert id="s_insert" parameterType="regist.MemberInfo">insert into student(name,password,s_email,s_phone,s_tag,photo) values(#{name},#{password},#{s_email},#{s_phone},#{s_tag},#{strphoto}) </insert>
+
+<select id="t_email" resultType="string">select t_email from teacher </select>
+
+<insert id="t_insert" parameterType="regist_t.MemberInfo_t">insert into teacher(name,password,t_email,t_phone,photo) values(#{name},#{password},#{t_email},#{t_phone},#{strphoto}) </insert>
+
+<select id="s_login" resultType="string" parameterType="string">select password from student where s_email=#{s_email} </select>
+
+<select id="t_login" resultType="string" parameterType="string">select password from teacher where t_email=#{t_email} </select>
+
+<select id="loginData" resultType="regist.MemberInfo" parameterType="string">select * from student where s_email=#{s_email} </select>
+
+<select id="t_loginData" resultType="regist_t.MemberInfo_t" parameterType="string">select * from teacher where t_email=#{t_email} </select>
+
+<insert id="photoInsert" parameterType="regist.PhotoDto"> insert into photo_name values(#{photo},#{photo_name}) </insert>
+
+</mapper>

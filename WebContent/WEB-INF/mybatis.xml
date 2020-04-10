@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+
+	
+	<!-- properies파일로 부터 읽어옴. 읽어온 데이터는 ${}로 사용 -->
+	<context:property-placeholder local-override="true" location="classpath:db.properties" />
+	
+	<!-- 커넥션 풀 설정 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${name}" />
+		<property name="password" value="${pwd}" />
+	</bean>
+
+	<!-- sqlSessionFactort 객체 주입 -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="sqlSessionFactory">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:sql/*.xml" />
+		<property name="configLocation" value="classpath:config.xml" />
+	</bean>
+	
+	<!-- sqlSessionFactory 객체주입 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+	destroy-method="clearCache">
+	<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
+	<bean id="sDao" class="regist.RegistDao" p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="tDao" class="regist_t.RegistDao_t" p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="lDao" class="login.LoginDao" p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="lDao_t" class="login_t.LoginDao_t" p:sqlSessionFactory-ref="sqlSessionFactory" />
+	
+</beans>
+
+
+
+
+
+
+
+
+
+

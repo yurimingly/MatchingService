@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="board">
+<!-- 게시글 전체보기 -->
+<select id="listAll" resultType="board.DtoDaoService.BoardDto">
+        select *,(select count(*) from reply where code=board.code) as recnt from board
+</select>
+
+<!-- 게시글 쓸 때 원래있는 회원 db의 email과 같은지 확인할때 -->
+<select id="emailcheck" resultType="login.LoginCommand">
+select password,s_email from student 
+</select>
+
+<!-- 게시글 작성 -->    
+<insert id="insert" parameterType="board.DtoDaoService.BoardDto"> <!--  useGeneratedKeys="true" keyProperty="code" -->
+insert into board (
+code,title,content,writer,email,reg_datetime
+)
+values(
+#{code},#{title}, #{content}, #{writer},#{email}, now()
+)
+</insert>
+
+<!-- 게시글 상세보기 조회 -->
+<select id="view" resultType="board.DtoDaoService.BoardDto">
+SELECT * FROM board
+WHERE code = #{code}
+</select>    
+
+
+<!--게시글 수정처리-->
+<update id="updateBoard">
+        update board set
+            title = #{title}
+            , content = #{content}
+            , writer = #{writer}
+            , reg_datetime = now()
+        where
+            code = #{code}
+</update>
+    
+<!-- 게시글 삭제처리 -->
+<delete id="deleteBoard">
+        delete from board
+        where
+            code = #{code}
+</delete>
+    
+
+ <!-- 게시글 조회수 증가 처리 -->
+ <update id="increaseViewcnt">
+ UPDATE board SET viewcnt = viewcnt+1
+ WHERE code=#{code}
+ </update>
+ 
+ 
+ 
+<!-- 계층형 게시판 ->댓글로바꿈
+<insert id="insertLayer" parameterType="board.DtoDaoService.BoardDto">
+insert into board (originNo,groupOrd,groupLayer,title,content,writer,reg_datetime) 
+values(#{originNo},#{groupOrd},#{groupLayer},#{title}, #{content}, #{writer}, now()
+) 
+</insert>
+  -->
+  
+</mapper>
