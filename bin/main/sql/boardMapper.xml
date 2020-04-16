@@ -4,10 +4,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="board">
+	
 <!-- 게시글 전체보기 -->
 <select id="listAll" resultType="board.DtoDaoService.BoardDto">
-        select *,(select count(*) from reply where code=board.code) as recnt from board
+        select code,writer,title,password,reg_datetime,email,viewcnt,(select count(*) from reply where code=board.code) as recnt 
+        from board 
+        <!-- where 절을 include 태그로 삽입 -->
+        <include refid="search"></include>
+        order by code desc limit 10
 </select>
+
+<!-- //////////////////////////////////// -->
+<!-- 게시글 전체 카운트 -->
+<select resultType="int" id="listcount">select count(*) as cnt from board </select>
+
+<!-- 인덱스 지정 일정갯수 select -->
+<select resultType="board.DtoDaoService.BoardDto" id="limitcount">
+select * from board limit #{startIndex},#{pageSize} 
+</select>
+<!-- //////////////////////////////////// -->
+
+
+<!-- 게시글 레코드 갯수 -->
+<select id="countArticle" resultType="int">
+select count(*) from board
+<!-- where 절 삽입 -->
+<include refid="search"></include>
+</select>
+
+
+<!-- mybatis include : 쿼리를 반복할때 mapper에서 쿼리를 따로 빼서 작성한다음에 include로 끼워 넣는다.-->
+<sql id="search">
+ <choose>
+	<!-- 검색 옵션이 전체 검색일 경우 -->
+	<when test="searchOption=='all'">
+	where writer like CONCAT('%',#{keyword},'%')
+	or content like CONCAT('%',#{keyword},'%')
+	or title like CONCAT('%',#{keyword},'%')
+	</when>
+	<!-- 전체 검색이 아닐경우 -->
+	<otherwise>
+	where ${searchOption} like CONCAT('%',#{keyword},'%')
+	</otherwise>
+ </choose>
+</sql>	
 
 <!-- 게시글 쓸 때 원래있는 회원 db의 email과 같은지 확인할때 -->
 <select id="emailcheck" resultType="login.LoginCommand">
@@ -17,10 +57,10 @@ select password,s_email from student
 <!-- 게시글 작성 -->    
 <insert id="insert" parameterType="board.DtoDaoService.BoardDto"> <!--  useGeneratedKeys="true" keyProperty="code" -->
 insert into board (
-code,title,content,writer,email,reg_datetime
+code,title,content,writer,email,password,reg_datetime
 )
 values(
-#{code},#{title}, #{content}, #{writer},#{email}, now()
+#{code},#{title}, #{content}, #{writer},#{email},#{password},now()
 )
 </insert>
 
@@ -28,8 +68,13 @@ values(
 <select id="view" resultType="board.DtoDaoService.BoardDto">
 SELECT * FROM board
 WHERE code = #{code}
-</select>    
+</select>
 
+<!-- 게시글 비밀번호 처리 -->
+<select id="passwordcheck" parameterType="map" resultType="board.DtoDaoService.BoardDto">   
+select * from board
+where code=#{code} and password = #{password}
+</select>
 
 <!--게시글 수정처리-->
 <update id="updateBoard">
@@ -57,13 +102,6 @@ WHERE code = #{code}
  </update>
  
  
- 
-<!-- 계층형 게시판 ->댓글로바꿈
-<insert id="insertLayer" parameterType="board.DtoDaoService.BoardDto">
-insert into board (originNo,groupOrd,groupLayer,title,content,writer,reg_datetime) 
-values(#{originNo},#{groupOrd},#{groupLayer},#{title}, #{content}, #{writer}, now()
-) 
-</insert>
-  -->
+
   
 </mapper>

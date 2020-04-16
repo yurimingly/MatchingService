@@ -20,7 +20,8 @@ public class UpdatePath {
 	BoardService boardservice;
 	
 	@RequestMapping
-	public ModelAndView uD(@RequestParam int code, HttpSession session){
+	public ModelAndView uD(@RequestParam int code,
+						   HttpSession session){
 		//이 길은 수정으로 가는 길
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("board/update");

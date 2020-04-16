@@ -12,7 +12,7 @@
 <body>
 
 <c:forEach var="row" items="${list}">
-${row.rno}<br>${row.replyer}<br>${row.replytext}
+${row.replyer}<br>${row.replytext}
 </c:forEach>
 <!-- 
 <table style="width:700px">

@@ -11,15 +11,14 @@ public class BoardDto{
 	private String email;
 	private Timestamp reg_datetime;
 	private int viewcnt;
-	
 	//게시글 댓글의 수 추가
 	private int recnt;
-
-	/*
-	 * //계층형 게시판을 위한 추가 private int originNo; private int groupOrd; private int
-	 * groupLayer;
-	 * 
-	 */	
+	private String password;
+	
+	public BoardDto() {};
+	
+	
+	
 	public int getCode() {
 		return code;
 	}
@@ -44,7 +43,6 @@ public class BoardDto{
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-
 	
 	public String getEmail() {
 		return email;
@@ -72,29 +70,42 @@ public class BoardDto{
 	public void setRecnt(int recnt) {
 		this.recnt = recnt;
 	}
-	/*
-	 * public int getOriginNo() { return originNo; } public void setOriginNo(int
-	 * originNo) { this.originNo = originNo; } public int getGroupOrd() { return
-	 * groupOrd; } public void setGroupOrd(int groupOrd) { this.groupOrd = groupOrd;
-	 * } public int getGroupLayer() { return groupLayer; } public void
-	 * setGroupLayer(int groupLayer) { this.groupLayer = groupLayer; }
-	 */
-	public BoardDto() {}
-	
-	public BoardDto(int code, String title, String content, String writer, Timestamp reg_datetime, int viewcnt) {
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
+	public BoardDto(int code, String title, String content, String writer, String email, Timestamp reg_datetime,
+			int viewcnt, int recnt, String password) {
 		super();
 		this.code = code;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
+		this.email = email;
 		this.reg_datetime = reg_datetime;
 		this.viewcnt = viewcnt;
+		this.recnt = recnt;
+		this.password = password;
 	}
-	
+
+
+
 	@Override
 	public String toString() {
 		return "BoardDto [code=" + code + ", title=" + title + ", content=" + content + ", writer=" + writer
-				+ ", reg_datetime=" + reg_datetime + "]";
+				+ ", email=" + email + ", reg_datetime=" + reg_datetime + ", viewcnt=" + viewcnt + ", recnt=" + recnt
+				+ ", password=" + password + "]";
 	}
+	
+	
+	
+	
 
 }

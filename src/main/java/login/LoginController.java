@@ -42,7 +42,9 @@ public class LoginController {
 			return "login/loginForm";
 		}
 		String s_email=loginCommand.getS_email();
+		
 		MemberInfo loginData=serv.getMemberInfo(s_email);
+		
 		session.setAttribute("loginData",loginData);
 		
 		return "login/loginSuccess";

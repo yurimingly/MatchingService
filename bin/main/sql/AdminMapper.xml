@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace = "admin">
+ 
+ <select id = "studentList" resultType="admin.Dao.StudentDto">
+	 select * from student 
+ </select>
+ 
+ <select id="teacherList" resultType="admin.Dao.TeacherDto">
+ 	select * from teacher
+ </select>
+ 
+ <delete id = "DeleteStudent">
+ 	delete from student where s_num = #{s_num}
+ </delete>
+ 
+  <delete id = "DeleteTeacher">
+ 	delete from teacher where t_num = #{t_num}
+ </delete>
+ 
+ <!-- <select id = "teacherList" resultType = "admin.Dao.TeacherDto">
+ 	select * from teacher
+ </select> -->
+ </mapper>

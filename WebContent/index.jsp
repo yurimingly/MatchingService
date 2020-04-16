@@ -32,8 +32,8 @@
                     <ul class="navbar-nav ml-auto my-2 my-lg-0">
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Services</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="LoginStudent.do">로그인하기</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="BoardList.do">QnA</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="insert.do">로그인하기</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="BoardList.do">게시판</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,15 +46,18 @@
                     <div class="col-lg-10 align-self-end">
                         <h1 class="text-uppercase text-white font-weight-bold">Matching Teacher Student</h1>
                         
-    <!-- 상엽 -->
-                        <a href="RegistStudent.do">학생 회원가입</a><br>
-	<a href="RegistTeacher.do">선생님 회원가입</a><br><br>
+                        <!-- 상엽 -->
+                        <a href="student/s_regist/controll">학생 회원가입</a><br>
+	<a href="teacher/t_regist/controll">선생님 회원가입</a><br><br>
 	
-	<a href="LoginStudent.do">학생 로그인</a><br>
-	<a href="LoginTeacher.do">선생님 로그인 </a><br><br>
-	<a href="upload.do">강좌 업로드</a><br>	
-	<a href="index1.do">수강신청</a> <BR>	
-	<a href="index123.do">수강신청111</a> <BR>
+	<a href="student/login/login">학생 로그인</a><br>
+	<a href="teacher/login_t/login">선생님 로그인 </a><br>
+	
+	<a href="admin.do">관리자 페이지</a><br>
+	
+	<a href="test.jsp"> session에 저장한 값 저장 되었는지 test</a>
+	
+	
 	
 	
                         <hr class="divider my-4" />
@@ -80,7 +83,6 @@
                 </div>
             </div>
         </section>
-        
         <!-- Services section-->
         <section class="page-section" id="services">
             <div class="container">

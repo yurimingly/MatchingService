@@ -1,6 +1,7 @@
 package board.DtoDaoService;
 
-import java.sql.Timestamp; 
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,13 +20,24 @@ public class BoardServiceImpl implements BoardService{
 	
 	//리스트 전부 보여주기!!!!!!!!!!!!! LIST
 	@Override
+	public List<BoardDto> listAll(String searchOption, String keyword) {
+		return boardDao.listAll(searchOption, keyword);
+	}
+	
+	/*@Override
 	public List<BoardDto> listAll() {
 		return boardDao.listAll();
 	}
+	*/
 	
-	public void setBoardDao(BoardDao boardDao) {
-		this.boardDao = boardDao;
+	//게시글 레코드 갯수 메서드 추가
+	@Override
+	public int countArticle(String searchOption, String keyword) {
+		// TODO Auto-generated method stub
+		return boardDao.countArticle(searchOption,keyword);
 	}
+
+
 
 	//board email과 확인하려고
 	@Override
@@ -48,7 +60,7 @@ public class BoardServiceImpl implements BoardService{
 		String email=bdto.getEmail();
 		Timestamp reg_date=bdto.getReg_datetime();
 		
-		//보안문제로 인해서 태그문자를 처리
+		//태그문자를 처리
 		title = title.replace("<","&lt;");
 		title = title.replace(">","&gt;");
 		writer = writer.replace("<","&lt;");
@@ -80,6 +92,13 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.read(code);
 	}
 	
+	//게시글 상세보기 전에 비밀번호 체크
+	@Override
+	public BoardDto passwordcheck(HashMap<Object, Object> m) {
+		// TODO Auto-generated method stub
+		return boardDao.passwordcheck(m);
+	}
+
 	//게시글 수정하기 U
 	@Override
 	public void update(BoardDto bdto) {
@@ -111,39 +130,19 @@ public class BoardServiceImpl implements BoardService{
 		
 	}
 
-	
-	//게시글 답글작성C
+
+
 	@Override
-	public void insertLayer(BoardDto bdto) {
-		// TODO Auto-generated method stub
-		int code=bdto.getCode();
-		
-//		int originNo=bdto.getOriginNo();
-//		int groupOrd=bdto.getGroupOrd();
-//		int groupLayer=bdto.getGroupLayer();
-		
-		String title=bdto.getTitle();
-		String content=bdto.getContent();
-		String writer=bdto.getWriter();
-		Timestamp reg_date=bdto.getReg_datetime();
-		
-		
-		bdto.setCode(code);
-		bdto.setTitle(title);
-		bdto.setContent(content);
-		bdto.setWriter(writer);
-		bdto.setReg_datetime(reg_date);
-
-	
-//		//계층형 게시판을 위한 추가
-//		bdto.setOriginNo(originNo);
-//		bdto.setGroupOrd(groupOrd);
-//		bdto.setGroupLayer(groupLayer);
-//		
-		
-		boardDao.insertLayer(bdto);
-
+	public int listCount() {
+		return boardDao.listCount();
 	}
+
+	@Override
+	public List<BoardDto> listLimit(PagingData pagingData) {
+		return boardDao.listLimit(pagingData);
+	}
+	
+	
 	
 
 }

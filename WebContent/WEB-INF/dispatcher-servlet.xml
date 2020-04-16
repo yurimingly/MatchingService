@@ -41,7 +41,8 @@
 	<context:annotation-config />
 	<context:component-scan
 		base-package="board.controller,board.DtoDaoService,
-		regist,regist_t,login,login_t" />
+		regist,regist_t,login,login_t,
+		admin.*" />
 
 	<!-- beanNameViewResolver -->
 	<bean

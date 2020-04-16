@@ -28,7 +28,7 @@ public class WriteCont {
 	@RequestMapping
 	public String write(Model wModel, HttpSession session) {
 		List<LoginCommand> check = boardService.boardemailcheck();
-		System.out.println(check);
+//		System.out.println(check);
 		wModel.addAttribute("check", check);
 		return "board/write";
 	}

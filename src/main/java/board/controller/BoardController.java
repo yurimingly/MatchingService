@@ -1,6 +1,8 @@
 package board.controller;
 
-import java.util.List;    
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import board.DtoDaoService.BoardDto;
 import board.DtoDaoService.BoardService;
+import board.DtoDaoService.PagingData;
 
 @Controller
 @RequestMapping("BoardList.do")
@@ -25,75 +28,47 @@ public class BoardController{
 	@Autowired
 	BoardService boardService;
 	
-	//리스트 전부 보여주기!!!!!!!!!!!!
 	@RequestMapping
-	public String showList(Model aModel) {
-		List<BoardDto> list = boardService.listAll();
-		aModel.addAttribute("list",list);
-		//request.setAttribute와 똑같은 표현
-		return "board/list";
+	public ModelAndView list(@RequestParam(defaultValue="all") String searchOption,
+							 @RequestParam(defaultValue="", required=false) String keyword,
+							 @RequestParam(defaultValue = "1") int curPage){
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		//리스트
+		List<BoardDto> list= boardService.listAll(searchOption, keyword);
+		map.put("list", list); //list
+		
+		//레코드 갯수
+		int count = boardService.countArticle(searchOption, keyword);
+		map.put("count", count); //레코드갯수
+		
+		//검색옵션
+		map.put("searchOption", searchOption);
+		
+		//뭘로 검색할지
+		map.put("keyword", keyword);
+		
+		//뷰만들어 놓고
+		ModelAndView mv = new ModelAndView();
+		
+		mv.addObject("map", map);//맵에 저장된 데이터를 mv에 저장
+		mv.setViewName("board/list");//뷰를 list.jsp로 설정해서 넘김
+		
+		//리스트 개수
+		int listCnt = boardService.listCount();
+		//현재페이지
+		PagingData pagingData = new PagingData(listCnt, curPage);
+		//몇개씩만 가져오겠다
+		List<BoardDto> list2 = boardService.listLimit(pagingData);
+		
+		//페이징
+		mv.addObject("list2", list2);
+		mv.addObject("listCnt", listCnt);
+		mv.addObject("pagingData", pagingData);
+		
+		return mv;
 	}
 	
-/*	
-	@Controller
-	@RequestMapping("/board/*")
-	public class BoardController{
-		
-		@Autowired
-		BoardService boardService;
-		
-		//리스트 전부 보여주기!!!!!!!!!!!!
-		@RequestMapping("list.do")
-		public String showList(Model aModel) {
-			List<BoardDto> list = boardService.listAll();
-			aModel.addAttribute("list",list);
-			//request.setAttribute와 똑같은 표현
-			return "board/list";
-		}
-		
-		//게시글을 작성 화면
-		@GetMapping("write.do")
-		public String write() {
-			return "board/write";
-		}
-		//게시글을 작성 넘어가는 화면
-		@PostMapping("insert.do")
-		public String insert(@ModelAttribute("BoardDto")BoardDto bdto) {
-			boardService.insert(bdto);
-			return "board/insert";
-		}
-		
-		//게시글 상세내용 조회
-		@RequestMapping(value = "view.do", method = RequestMethod.GET)
-		public ModelAndView view(@RequestParam int code, HttpSession session) {
-		
-		//조회수 증가
-		boardService.increaseViewcnt(code,session);
-		
-		//view 상세내역 조회
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("board/view");
-		mav.addObject("BoardDto",boardService.read(code));
-		//여기는 뷰에서 보일 이름을 설정하는 곳
-		return mav;
-		}
-		
-		//게시글 수정하기
-		@PostMapping("update.do")
-		public String update(@ModelAttribute("BoardDto")BoardDto bdto) {
-			boardService.update(bdto);
-			return "redirect:list.do";
-		}
-		
-		//게시글 삭제하기
-		@PostMapping("delete.do")
-		public String delete(@RequestParam int code) {
-			boardService.delete(code);
-			return "redirect:list.do";
-		}
-
-
-	}
-*/
 
 }

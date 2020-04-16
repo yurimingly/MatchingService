@@ -14,15 +14,17 @@ values (#{code},#{replytext},#{replyer})
 
 <!-- 댓글목록-->
 <select id="listReply" resultType="board.DtoDaoService.ReplyDto">
-select rno,r.code,replytext,r.replyer, r.reg_datetime 
-from reply r 
-where r.code=#{code} order by rno
+select code,replytext,replyer,reg_datetime 
+from reply 
+where code=#{code} order by rno
+
 <!-- 
 select r.rno,r.code,replytext,r.replyer, r.reg_datetime 
 from reply r left outer join board b 
 on r.code=b.#{code}; -->
 
 </select>
+
 
  
  </mapper>

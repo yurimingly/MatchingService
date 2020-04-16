@@ -22,7 +22,7 @@ public class ViewCont {
 		
 	    //게시글 상세내용 조회
 		@RequestMapping
-		public ModelAndView view(@RequestParam int code, HttpSession session) {
+		public ModelAndView view(@RequestParam int code,HttpSession session) {
 		
 		//조회수 증가
 		boardService.increaseViewcnt(code,session);

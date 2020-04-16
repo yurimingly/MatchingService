@@ -40,6 +40,7 @@ $("#btnUpdate").click(function(){
 	var title=document.form1.title.value;
 	var content=document.form1.content.value;
 	var writer=document.form1.writer.value;
+	var password=document.form1.password.value;
 
 	 if(title==""){
 			alert("제목을 입력하세요");
@@ -119,6 +120,7 @@ ${BoardDto.viewcnt} </p>
 <!-- <div style="width:650px; text-align:center;"> -->
 
 <input type="hidden" name="code" value="${BoardDto.code}">
+<input type="hidden" name="password" value="${BoardDto.password}">
 <input type="button" id="btnUpdate"  class="btn btn-info" value="수정완료"/>
 
 <!-- <button type="submit" id="btnUpdate">수정완료</button> <button type="submit" id="btnDelete">삭제</button> -->

@@ -1,6 +1,8 @@
 package board.DtoDaoService;
 
-import java.util.List; 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,9 +19,31 @@ public class BoardDaoImpl implements BoardDao{
 
 	//게시글 목록
 	@Override
+	public List<BoardDto> listAll(String searchOption, String keyword) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("searchOption",searchOption);
+		map.put("keyword",keyword);
+		return SqlSession.selectList("board.listAll",map);
+	}
+	
+	/*
+	//게시글 목록
+	@Override
 	public List<BoardDto> listAll() {
 		return SqlSession.selectList("board.listAll");
+	}*/
+
+	
+	//게시글 레코드 갯수
+	@Override
+	public int countArticle(String searchOption, String keyword) {
+		// TODO Auto-generated method stub
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		return SqlSession.selectOne("board.countArticle",map);
 	}
+	
 
 	//게시글 작성 C
 	@Override
@@ -28,6 +52,7 @@ public class BoardDaoImpl implements BoardDao{
 		SqlSession.insert("board.insert",bdto);
 	}
 
+
 	//게시글 상세보기 R
 	@Override
 	public BoardDto read(int code) {
@@ -35,6 +60,12 @@ public class BoardDaoImpl implements BoardDao{
 		return SqlSession.selectOne("board.view",code);
 	}
 	
+
+	@Override
+	public BoardDto passwordcheck(HashMap<Object, Object> m) {
+		return  SqlSession.selectOne("board.passwordcheck",m);
+	}
+
 	//게시글 수정하기 U
 	@Override
 	public void update(BoardDto bdto) {
@@ -54,16 +85,20 @@ public class BoardDaoImpl implements BoardDao{
 		SqlSession.update("board.increaseViewcnt", code);	
 	}
 	
-	//계층형 게시판
-	@Override
-	public void insertLayer(BoardDto bdto) {
-		SqlSession.insert("board.insertLayer",bdto);
-	}
-
-	//boardlistcheck
+	//게시글 쓸 때 비회원인지 회원인지 확인할때 
 	@Override
 	public List<LoginCommand> boardemailcheck() {
 		return SqlSession.selectList("board.emailcheck");
+	}
+
+	@Override
+	public int listCount() {
+		return SqlSession.selectOne("board.listcount");
+	}
+
+	@Override
+	public List<BoardDto> listLimit(PagingData pagingData) {
+		return SqlSession.selectList("board.limitcount",pagingData);
 	}
 	
 	

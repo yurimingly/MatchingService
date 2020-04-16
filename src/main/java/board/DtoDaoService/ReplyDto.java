@@ -71,6 +71,13 @@ public class ReplyDto {
 		this.reg_updatetime = reg_updatetime;
 	}
 	public ReplyDto() {}
+	@Override
+	public String toString() {
+		return "ReplyDto [rno=" + rno + ", code=" + code + ", replytext=" + replytext + ", replyer=" + replyer
+				+ ", name=" + name + ", reg_datetime=" + reg_datetime + ", reg_updatetime=" + reg_updatetime + "]";
+	}
+	
+	
 	
 	
 
